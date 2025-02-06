@@ -5,7 +5,7 @@ import br.com.sanadev.produtosapi.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.List;
 
 @RestController
 @RequestMapping("products")
@@ -23,6 +23,16 @@ public class ProductController {
     @GetMapping("{id}")
     public Product findById(@PathVariable("id") long id){
         return (Product) prodRepo.findById(id).orElse(null);
+    }
+
+    @DeleteMapping("{id}")
+    public void delete(@PathVariable("id") long id){
+        prodRepo.deleteById(id);
+    }
+
+    @GetMapping("list")
+    public List<Product> getList(){
+        return prodRepo.findAll();
     }
 }
 
