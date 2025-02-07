@@ -21,7 +21,8 @@ public class ProductController {
      */
     @PostMapping
     public void save(@RequestBody Product prod){
-        System.out.println("Tentei salvar o produto"+prod);
+
+        System.out.println("\nTentei salvar o produto"+prod+"\n");
           prodRepo.save(prod);
         }
 
