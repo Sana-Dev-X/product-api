@@ -16,23 +16,26 @@ public class ProductController {
     @Autowired
     private ProductRepository prodRepo;
 
-
-    //Salva e redireciona
-    @PostMapping("/product")
+    @PostMapping("/save")
     public String save(@ModelAttribute Product prod){
-          prodRepo.save(prod);
+        prodRepo.save(prod);
         return "redirect:/products/list";
         }
 
-    //Funcionando
-    @GetMapping("{id}")
-    public Product findById(@PathVariable("id") long id){
-        return (Product) prodRepo.findById(id).orElse(null);
-    }
-
-    @DeleteMapping("{id}")
+    @GetMapping("/delete/{id}")
     public String delete(@PathVariable("id") long id){
         prodRepo.deleteById(id);
+        return "redirect:/products/list";
+    }
+
+    //corrigir
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable("id") long id, @ModelAttribute Product product){
+        Product p = prodRepo.findById(id).get();
+        p.setName(product.getName());
+        p.setPrice(product.getPrice());
+        p.setDescription(product.getDescription());
+        prodRepo.save(p);
         return "redirect:/products/list";
     }
 
@@ -42,12 +45,13 @@ public class ProductController {
         return "all-products";
     }
 
-    @PutMapping
-    public void update(@RequestBody Product p){
-        prodRepo.save(p);
+    @GetMapping("/form")
+    public String form(Model model){
+        model.addAttribute("product", new Product());
+        return "form";
     }
 
-    @GetMapping("search")
+    @GetMapping("/search")
     public List<Product> search(@RequestParam("name") String name){
            return prodRepo.findByName(name);
     }
