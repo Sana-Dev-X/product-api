@@ -3,29 +3,26 @@ package br.com.sanadev.produtosapi.controller;
 import br.com.sanadev.produtosapi.model.Product;
 import br.com.sanadev.produtosapi.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-
 import java.util.List;
 
 
-@RestController
-@RequestMapping("products")
+@Controller
+@RequestMapping("/products")
 public class ProductController {
 
     @Autowired
     private ProductRepository prodRepo;
 
-    /*Preciso corrigir
-    pois a anotação @GeneratedValue não está gerando os IDs quando o banco já está populado
-     */
-    @PostMapping
-    public void save(@RequestBody Product prod){
 
-        System.out.println("\nTentei salvar o produto"+prod+"\n");
+    //Salva e redireciona
+    @PostMapping("/product")
+    public String save(@ModelAttribute Product prod){
           prodRepo.save(prod);
+        return "redirect:/products/list";
         }
-
 
     //Funcionando
     @GetMapping("{id}")
@@ -34,13 +31,15 @@ public class ProductController {
     }
 
     @DeleteMapping("{id}")
-    public void delete(@PathVariable("id") long id){
+    public String delete(@PathVariable("id") long id){
         prodRepo.deleteById(id);
+        return "redirect:/products/list";
     }
 
-    @GetMapping("list")
-    public List<Product> getList(){
-        return prodRepo.findAll();
+    @GetMapping("/list")
+    public String getList(Model model){
+        model.addAttribute("products",prodRepo.findAll());
+        return "all-products";
     }
 
     @PutMapping
