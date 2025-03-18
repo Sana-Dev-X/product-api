@@ -7,7 +7,6 @@
 -**Technologies:**
   Java
   Spring Framework
-  Lombok
   HTML
   CSS
   MySQL
@@ -15,7 +14,8 @@
   Postman
 
 -**Current status:**
-  Still in development.
+  On hiatus for now. I'll probably be back soon to add new features.
+  I added the pages with the forms based on some research I did on JavaScript and it's working. 
 
 -**Features:**
   Creation, display, updating and deletion of products;
